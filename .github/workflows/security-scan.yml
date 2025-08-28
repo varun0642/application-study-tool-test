@@ -31,11 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: anchore/scan-action@v3
-        with:
+      - uses: anchore/scan-action@v6
+          with:
           path: "."
           fail-build: false
-          output-format: sarif
           output-file: grype-results.sarif
       - name: Upload Grype scan results
         uses: github/codeql-action/upload-sarif@v3
@@ -54,6 +53,6 @@ jobs:
           to-sarif: true
           output: osv-results.sarif
       - name: Upload OSV scan results
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: osv-results.sarif
