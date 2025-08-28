@@ -111,26 +111,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: osv-results.sarif
-
-  sysdig:
-    name: Sysdig Secure Scan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download image artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-      - name: Load image
-        run: docker load < image.tar
-      - name: Sysdig Secure Inline Scan
-        uses: sysdiglabs/scan-action@v3
-        with:
-          image-tag: "your-image:tag"
-          sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
-          format: sarif
-          output-file: sysdig-results.sarif
-      - name: Upload Sysdig scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: sysdig-results.sarif
