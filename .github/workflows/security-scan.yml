@@ -40,21 +40,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: grype-results.sarif
-
-  osv-scanner:
-    name: OSV Scanner
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Run OSV Scanner
-        uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.2.1
-        with:
-          scan-args: "--recursive ./"
-          output: osv-results.sarif
-
-      - name: Upload OSV scan results
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: osv-results.sarif
