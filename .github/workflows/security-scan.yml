@@ -9,62 +9,19 @@ on:
     - cron: '0 0 * * 0'  # Run weekly
 
 jobs:
-  build:
-    name: Build Container
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build container image
-        run: docker build -t localbuild/testimage:latest .
-      - name: Save image for other jobs
-        run: docker save localbuild/testimage:latest > image.tar
-      - name: Upload image artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: docker-image
-          path: image.tar
-
-  anchore:
-    name: Anchore Container Scan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download image artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-      - name: Load image
-        run: docker load < image.tar
-      - name: Anchore scan
-        uses: anchore/scan-action@v3
-        with:
-          image: "localbuild/testimage:latest"
-          fail-build: false
-          output-format: sarif
-          output-file: anchore-results.sarif
-      - name: Upload Anchore scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: anchore-results.sarif
-
   trivy:
     name: Trivy Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Download image artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-      - name: Load image
-        run: docker load < image.tar
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
+          scan-ref: '.'
           format: 'sarif'
           output: 'trivy-results.sarif'
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: trivy-results.sarif
@@ -74,19 +31,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Download image artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-      - name: Load image
-        run: docker load < image.tar
       - uses: anchore/scan-action@v3
         with:
           path: "."
           fail-build: false
           output-format: sarif
           output-file: grype-results.sarif
-      - name: Upload Grype scan results to GitHub Security tab
+      - name: Upload Grype scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: grype-results.sarif
@@ -96,18 +47,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Download image artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docker-image
-      - name: Load image
-        run: docker load < image.tar
       - name: Run OSV Scanner
         uses: google/osv-scanner/actions/scanner@main
         with:
+          path: "."
           to-sarif: true
           output: osv-results.sarif
-      - name: Upload OSV scan results to GitHub Security tab
+      - name: Upload OSV scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: osv-results.sarif
