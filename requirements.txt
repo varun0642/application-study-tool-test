@@ -1,1 +1,30 @@
-PyYAML==6.0.2
+Django==1.2.1           # CVE-2015-5145, CVE-2015-5144
+Flask==0.12             # CVE-2018-1000656
+requests==2.19.1        # CVE-2018-18074
+urllib3==1.24.1         # CVE-2019-11324
+PyYAML==3.13            # CVE-2017-18342
+Jinja2==2.7.2           # CVE-2016-10745
+Pillow==6.2.1           # CVE-2020-5313
+lxml==4.3.0             # CVE-2019-19956
+sqlalchemy==1.2.17      # CVE-2019-7548
+pyOpenSSL==16.2.0       # CVE-2018-1000807
+cryptography==2.1.4     # CVE-2018-10903
+paramiko==2.4.0         # CVE-2018-7750
+pillow==5.1.0           # CVE-2018-11218
+celery==3.1.25          # CVE-2019-11236
+django-rest-framework==3.1.3 # CVE-2016-7401
+tornado==4.4.2          # CVE-2016-3175
+Werkzeug==0.11.10       # CVE-2016-10516
+chardet==3.0.2          # CVE-2019-10906
+bleach==2.0.0           # CVE-2018-14735
+MarkupSafe==1.0         # CVE-2019-1010083
+simplejson==3.16.0      # CVE-2017-16516
+pytz==2017.2            # CVE-2018-11091
+idna==2.6               # CVE-2017-14062
+pycrypto==2.6.1         # CVE-2013-7459
+pyjwt==1.5.3            # CVE-2017-11424
+setuptools==39.0.1      # CVE-2018-20225
+py==1.5.2               # CVE-2019-15806
+Pygments==2.2.0         # CVE-2017-8422
+# Go version for PoC vulnerable scan
+go 1.12.2
