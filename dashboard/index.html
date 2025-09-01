@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Security Scan Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    h1 { color: #333; }
+    .summary { margin-bottom: 2em; }
+    .vuln { border-bottom: 1px solid #ccc; padding: 0.5em 0; }
+    .severity { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Security Scan Dashboard</h1>
+  <input type="file" id="sarifFile" accept=".sarif" multiple>
+  <div id="results"></div>
+  <script>
+    document.getElementById('sarifFile').addEventListener('change', function(event) {
+      const files = event.target.files;
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const sarif = JSON.parse(e.target.result);
+          displaySarif(file.name, sarif);
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    function displaySarif(filename, sarif) {
+      const resultsDiv = document.getElementById('results');
+      const runs = sarif.runs || [];
+      let html = `<div class="summary"><h2>${filename}</h2>`;
+      runs.forEach(run => {
+        if (!run.results) return;
+        html += `<div><strong>Tool:</strong> ${run.tool.driver.name}</div>`;
+        html += `<div><strong>Findings:</strong> ${run.results.length}</div>`;
+        run.results.forEach(res => {
+          const ruleId = res.ruleId || '';
+          const severity = (res.level || '').toUpperCase();
+          const message = res.message && res.message.text ? res.message.text : '';
+          html += `<div class="vuln"><span class="severity">${severity}</span> [${ruleId}] - ${message}</div>`;
+        });
+      });
+      html += '</div>';
+      resultsDiv.innerHTML += html;
+    }
+  </script>
+</body>
+</html>
