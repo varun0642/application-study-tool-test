@@ -1,0 +1,67 @@
+# Proof of Concept for GitHub Secret Scanning
+# WARNING: This code intentionally includes hardcoded sensitive data for demonstration purposes!
+
+import requests
+import os
+
+def demo_sensitive_data():
+    # AWS Secret (Example Access Key and Secret Key)
+    AWS_ACCESS_KEY = "AKIAIOSFODNN7EXAMPLE"  # Intentional sensitive key
+    AWS_SECRET_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
+    print(f"Using AWS Access Key: {AWS_ACCESS_KEY}")
+    
+    # Sending a dummy request to AWS (demonstration only, no real key usage)
+    try:
+        requests.post("https://example.amazonaws.com", auth=(AWS_ACCESS_KEY, AWS_SECRET_KEY))
+    except:
+        print("[!] Dummy AWS Request Failed. This key is for testing purposes only.")
+
+def api_keys():
+    # Hardcoded GitHub Token (Example)
+    GITHUB_TOKEN = "ghp_abcd1234exampletokeneededforsecuritydetection"
+
+    # Hardcoded Slack Webhook (Example)
+    SLACK_WEBHOOK = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+
+    # Hardcoded Stripe Key (Example)
+    STRIPE_SECRET_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+
+    print("GitHub Token:", GITHUB_TOKEN)
+    print("Slack Webhook:", SLACK_WEBHOOK)
+    print("Stripe Secret Key:", STRIPE_SECRET_KEY)
+
+def private_keys():
+    # Embedded Private SSH Key
+    PRIVATE_SSH_KEY = """
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAACgAAAAeDS...FAKE_KEY_FOR_DEMO_poc
+    -----END OPENSSH PRIVATE KEY-----
+    """
+
+    # Example RSA Private Key
+    PRIVATE_RSA_KEY = """
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEArLEFAKEKEY_FOR_DEMO_poc_TEXT_EXAMPLE567890...AB
+    -----END RSA PRIVATE KEY-----
+    """
+
+    print("SSH Private Key:", PRIVATE_SSH_KEY)
+    print("RSA Private Key:", PRIVATE_RSA_KEY)
+
+def environment_secrets():
+    # Find Environment Variables for Secrets
+    print("Looking for environment variables in the system...")
+    environment_variables = os.environ
+
+    if "AWS_ACCESS_KEY" in environment_variables or "GITHUB_TOKEN" in environment_variables:
+        print("Environment secrets may be present!")
+    else:
+        print("No secrets in environment detected.")
+
+if __name__ == "__main__":
+    # Call the demo functions
+    demo_sensitive_data()
+    api_keys()
+    private_keys()
+    environment_secrets()
