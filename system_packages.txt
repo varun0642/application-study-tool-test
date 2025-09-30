@@ -1,0 +1,5 @@
+# System Package Versions for Vulnerability Testing
+# Format: package-name version
+
+open-vm-tools 11.1.5
+krb5-libs 1.19.1-3
